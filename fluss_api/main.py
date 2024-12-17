@@ -27,13 +27,12 @@ class FlussApiClient:
     def __init__(
         self,
         api_key: str,
-        base_url: str = "https://zgekzokxrl.execute-api.eu-west-1.amazonaws.com/v1/api/",
         session: typing.Optional[ClientSession] = None,
         timeout: int = 10,
     ) -> None:
         """Initialize the Fluss+ API Client."""
         self._api_key = api_key
-        self._base_url = base_url.rstrip("/") + "/"
+        self._base_url = "https://zgekzokxrl.execute-api.eu-west-1.amazonaws.com/v1/api/"
         self._timeout = timeout
         self._session = session or ClientSession()
 
