@@ -7,8 +7,8 @@ setup(
     install_requires =[
 
     ],
-    author="Njeru Ndegwa",
-    author_email="njeru@fluss.io",
+    author="Marcello Jardim",
+    author_email="marcello@fluss.io",
     description='A library to integrate the Fluss API into Home Assistant',
     classifiers=[
         'Programming Language :: Python :: 3',
