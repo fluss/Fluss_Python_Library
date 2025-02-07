@@ -9,7 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write  # Required for trusted publishing
+      id-token: write  # Required for Trusted Publishing
+    environment:
+      name: pypi  # Optional but recommended
 
     steps:
       - name: Check out the code
@@ -31,4 +33,4 @@ jobs:
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
+          attestations: true  # Optional
