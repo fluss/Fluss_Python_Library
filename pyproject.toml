@@ -4,14 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fluss_api"
-version = "0.1.9.5"
+version = "0.1.9.7"
 description = "Fluss+ API Client"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 dependencies = ["aiohttp"]
+
+[tool.setuptools]
+package-dir = {"" = "fluss_api"}
 
 [tool.setuptools.packages.find]
 where = ["fluss_api"]
 
 [project.urls]
-"Homepage" = "https://github.com/NjeruFluss/flussapi"
+"Homepage" = "https://github.com/fluss/Fluss_Python_Library"

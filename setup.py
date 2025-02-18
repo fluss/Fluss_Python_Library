@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="fluss_api",
-    version="0.1.9.5",
+    version="0.1.9.7",
     packages= find_packages(),
     install_requires =[
 

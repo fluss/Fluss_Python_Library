@@ -1,10 +1,10 @@
 Metadata-Version: 2.2
 Name: fluss_api
-Version: 0.1.9.5
+Version: 0.1.9.7
 Summary: Fluss+ API Client
 Author: Marcello Jardim
 Author-email: marcello@fluss.io
-Project-URL: Homepage, https://github.com/NjeruFluss/flussapi
+Project-URL: Homepage, https://github.com/fluss/Fluss_Python_Library
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
 License-File: LICENSE
