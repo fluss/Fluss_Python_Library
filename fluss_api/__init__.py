@@ -6,3 +6,11 @@ from .main import (
     FlussApiClientError,
     FlussDeviceError,
 )
+
+__all__ = [
+    "FlussApiClient",
+    "FlussApiClientAuthenticationError",
+    "FlussApiClientCommunicationError",
+    "FlussApiClientError",
+    "FlussDeviceError",
+]
