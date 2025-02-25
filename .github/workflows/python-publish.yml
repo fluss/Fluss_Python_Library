@@ -6,7 +6,7 @@ on:
        - 'v*'
 
 env:
-  PACKAGE_NAME: "fluss_pai"
+  PACKAGE_NAME: "fluss_api"
   OWNER: "Marcello"
 
 jobs:
@@ -91,7 +91,7 @@ jobs:
           poetry build
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist/
@@ -106,7 +106,7 @@ jobs:
       id-token: write
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/
@@ -127,7 +127,7 @@ jobs:
           fetch-depth: 0
 
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/
