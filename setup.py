@@ -2,10 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name="fluss_api",
-    version="0.1.9.9",
+    version="0.1.9.10",
     packages= find_packages(),
     install_requires =[
-
+        "aiohttp>=3.7.0",
     ],
     author="Marcello Jardim",
     author_email="marcello@fluss.io",
