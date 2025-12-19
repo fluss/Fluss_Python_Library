@@ -27,4 +27,3 @@ Homepage = "https://github.com/fluss/Fluss_Python_Library"
 
 [tool.setuptools.packages.find]
 where = ["."]
-exclude = ["tests", "tests.*"]
