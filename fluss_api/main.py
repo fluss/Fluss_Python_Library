@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import datetime
 import logging
 import typing
 
@@ -73,7 +72,7 @@ class FlussApiClient:
         """Get the current status of a device."""
         return await self._api_wrapper(
             method="GET",
-            endpoint=f"device/{device_id}/status",
+            endpoint=f"status/{device_id}",
             headers=self._auth_headers(),
         )
 
@@ -89,12 +88,10 @@ class FlussApiClient:
             **kwargs: Optional parameters forwarded to the API
                       (e.g. action="pulse", duration=3).
         """
-        timestamp = int(datetime.datetime.now().timestamp() * 1000)
-        data: dict[str, typing.Any] = {"timeStamp": timestamp, "metaData": {}}
-        data.update(kwargs)
+        data: dict[str, typing.Any] = {"metaData": kwargs.get("metaData", "")}
         return await self._api_wrapper(
             method="POST",
-            endpoint=f"device/{device_id}/trigger",
+            endpoint=f"trigger/{device_id}",
             headers=self._auth_headers(),
             data=data,
         )
@@ -110,14 +107,10 @@ class FlussApiClient:
             device_id: The ID of the device to open.
             **kwargs: Optional parameters forwarded to the API.
         """
-        timestamp = int(datetime.datetime.now().timestamp() * 1000)
-        data: dict[str, typing.Any] = {"timeStamp": timestamp, "metaData": {}}
-        data.update(kwargs)
         return await self._api_wrapper(
             method="POST",
-            endpoint=f"device/{device_id}/open",
+            endpoint=f"open/{device_id}",
             headers=self._auth_headers(),
-            data=data,
         )
 
     async def async_close_device(
@@ -131,14 +124,10 @@ class FlussApiClient:
             device_id: The ID of the device to close.
             **kwargs: Optional parameters forwarded to the API.
         """
-        timestamp = int(datetime.datetime.now().timestamp() * 1000)
-        data: dict[str, typing.Any] = {"timeStamp": timestamp, "metaData": {}}
-        data.update(kwargs)
         return await self._api_wrapper(
             method="POST",
-            endpoint=f"device/{device_id}/close",
+            endpoint=f"close/{device_id}",
             headers=self._auth_headers(),
-            data=data,
         )
 
     async def _api_wrapper(
