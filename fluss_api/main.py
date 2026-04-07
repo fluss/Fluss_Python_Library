@@ -1,11 +1,17 @@
-import aiohttp
+from __future__ import annotations
+
 import asyncio
+import datetime
 import logging
 import typing
+
+import aiohttp
 from aiohttp import ClientSession
 from urllib.parse import urljoin
 
 LOGGER = logging.getLogger(__name__)
+
+DEFAULT_BASE_URL = "https://v1.fluss-api.com/v1/"
 
 
 class FlussApiClientError(Exception):
@@ -27,8 +33,8 @@ class FlussApiClientAuthenticationError(FlussApiClientError):
 class FlussApiClient:
     """Fluss+ API Client.
 
-    Uses the Fluss REST API v1 at https://api.fluss.co.za/v1.
-    Authentication is via Bearer token (API key from the Fluss dashboard).
+    Uses the Fluss REST API v1 at https://v1.fluss-api.com/v1.
+    Authentication is via API key passed in the Authorization header.
     """
 
     def __init__(
@@ -36,7 +42,7 @@ class FlussApiClient:
         api_key: str,
         session: typing.Optional[ClientSession] = None,
         timeout: int = 10,
-        base_url: str = "https://api.fluss.co.za/v1/",
+        base_url: str = DEFAULT_BASE_URL,
     ) -> None:
         """Initialize the Fluss+ API Client."""
         self._api_key = api_key
@@ -47,7 +53,7 @@ class FlussApiClient:
     def _auth_headers(self) -> dict:
         """Return authorization headers for API requests."""
         return {
-            "Authorization": f"Bearer {self._api_key}",
+            "Authorization": self._api_key,
             "Content-Type": "application/json",
         }
 
@@ -56,7 +62,7 @@ class FlussApiClient:
         try:
             return await self._api_wrapper(
                 method="GET",
-                endpoint="devices",
+                endpoint="list",
                 headers=self._auth_headers(),
             )
         except FlussApiClientError as error:
@@ -67,7 +73,7 @@ class FlussApiClient:
         """Get the current status of a device."""
         return await self._api_wrapper(
             method="GET",
-            endpoint=f"devices/{device_id}/status",
+            endpoint=f"device/{device_id}/status",
             headers=self._auth_headers(),
         )
 
@@ -83,11 +89,14 @@ class FlussApiClient:
             **kwargs: Optional parameters forwarded to the API
                       (e.g. action="pulse", duration=3).
         """
+        timestamp = int(datetime.datetime.now().timestamp() * 1000)
+        data: dict[str, typing.Any] = {"timeStamp": timestamp, "metaData": {}}
+        data.update(kwargs)
         return await self._api_wrapper(
             method="POST",
-            endpoint=f"devices/{device_id}/trigger",
+            endpoint=f"device/{device_id}/trigger",
             headers=self._auth_headers(),
-            data=kwargs if kwargs else None,
+            data=data,
         )
 
     async def async_open_device(
@@ -101,11 +110,14 @@ class FlussApiClient:
             device_id: The ID of the device to open.
             **kwargs: Optional parameters forwarded to the API.
         """
+        timestamp = int(datetime.datetime.now().timestamp() * 1000)
+        data: dict[str, typing.Any] = {"timeStamp": timestamp, "metaData": {}}
+        data.update(kwargs)
         return await self._api_wrapper(
             method="POST",
-            endpoint=f"devices/{device_id}/open",
+            endpoint=f"device/{device_id}/open",
             headers=self._auth_headers(),
-            data=kwargs if kwargs else None,
+            data=data,
         )
 
     async def async_close_device(
@@ -119,11 +131,14 @@ class FlussApiClient:
             device_id: The ID of the device to close.
             **kwargs: Optional parameters forwarded to the API.
         """
+        timestamp = int(datetime.datetime.now().timestamp() * 1000)
+        data: dict[str, typing.Any] = {"timeStamp": timestamp, "metaData": {}}
+        data.update(kwargs)
         return await self._api_wrapper(
             method="POST",
-            endpoint=f"devices/{device_id}/close",
+            endpoint=f"device/{device_id}/close",
             headers=self._auth_headers(),
-            data=kwargs if kwargs else None,
+            data=data,
         )
 
     async def _api_wrapper(
@@ -152,18 +167,34 @@ class FlussApiClient:
 
         except asyncio.TimeoutError as e:
             LOGGER.error("Timeout error fetching information from %s", url)
-            raise FlussApiClientCommunicationError("Timeout error fetching information") from e
+            raise FlussApiClientCommunicationError(
+                "Timeout error fetching information"
+            ) from e
         except aiohttp.ClientError as ex:
+            msg = str(ex)
+            if "Domain name not found" in msg or "Name or service not known" in msg:
+                LOGGER.error(
+                    "DNS resolution failed for %s — the Fluss API host is "
+                    "unreachable. Verify the base URL is correct",
+                    url,
+                )
+                raise FlussApiClientCommunicationError(
+                    f"Cannot resolve API host for {url}. "
+                    "The Fluss API domain may have changed."
+                ) from ex
             LOGGER.error("Client error fetching information from %s: %s", url, ex)
-            raise FlussApiClientCommunicationError("Error fetching information") from ex
-        except FlussApiClientAuthenticationError as auth_ex:
-            LOGGER.error("Authentication error: %s", auth_ex)
+            raise FlussApiClientCommunicationError(
+                "Error fetching information"
+            ) from ex
+        except FlussApiClientAuthenticationError:
             raise
         except Exception as exception:
             LOGGER.error("Unexpected error occurred: %s", exception)
-            raise FlussApiClientError("An unexpected error occurred") from exception
+            raise FlussApiClientError(
+                "An unexpected error occurred"
+            ) from exception
 
-    async def close(self):
+    async def close(self) -> None:
         """Close the aiohttp session if it was created by this client."""
         if self._session and not self._session.closed:
             await self._session.close()
