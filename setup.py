@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="fluss_api",
-    version="0.2.1",
+    version="0.2.2",
     packages=find_packages(include=["fluss_api", "fluss_api.*"]),
     install_requires=[
         "aiohttp>=3.7.0",
