@@ -38,11 +38,4 @@ All notable changes to the fluss-api package will be documented in this file.
 
 ## [0.1.9.20]
 
-- Baseline version integrated into Home Assistant
-
-[0.2.2]: https://github.com/fluss/Fluss_Python_Library/compare/v0.2.1.2...v0.2.2
-[0.2.1.2]: https://github.com/fluss/Fluss_Python_Library/compare/v0.2.1.1...v0.2.1.2
-[0.2.1.1]: https://github.com/fluss/Fluss_Python_Library/compare/v0.2.1...v0.2.1.1
-[0.2.1]: https://github.com/fluss/Fluss_Python_Library/compare/v0.2.0...v0.2.1
-[0.2.0]: https://github.com/fluss/Fluss_Python_Library/compare/v0.1.9.20...v0.2.0
-[0.1.9.20]: https://github.com/fluss/Fluss_Python_Library/commit/633338c
+- Baseline version
