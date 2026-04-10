@@ -2,6 +2,13 @@
 
 All notable changes to the fluss-api package will be documented in this file.
 
+## [0.2.4] - 2026-04-10
+
+### Changed
+
+- Removed `dist/`, `build/`, and `setup.py` from the repository
+- Package now uses `pyproject.toml` exclusively for build configuration
+
 ## [0.2.3] - 2026-04-09
 
 ### Changed
@@ -47,6 +54,7 @@ All notable changes to the fluss-api package will be documented in this file.
 
 - Baseline version integrated into Home Assistant
 
+[0.2.4]: https://github.com/fluss/Fluss_Python_Library/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/fluss/Fluss_Python_Library/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/fluss/Fluss_Python_Library/compare/v0.2.1.2...v0.2.2
 [0.2.1.2]: https://github.com/fluss/Fluss_Python_Library/compare/v0.2.1.1...v0.2.1.2
