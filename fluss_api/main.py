@@ -29,6 +29,10 @@ class FlussApiClientAuthenticationError(FlussApiClientError):
     """Exception to indicate an authentication error."""
 
 
+class FlussDeviceOfflineError(FlussDeviceError):
+    """Exception to indicate the device is not connected to the internet."""
+
+
 class FlussApiClient:
     """Fluss+ API Client.
 
@@ -149,8 +153,14 @@ class FlussApiClient:
                 ) as response:
                     if response.status == 401:
                         raise FlussApiClientAuthenticationError("Invalid credentials")
-                    elif response.status == 403:
+                    if response.status == 403:
                         raise FlussApiClientAuthenticationError("Access forbidden")
+                    if response.status == 404:
+                        raise FlussDeviceError("Device not found")
+                    if response.status == 503:
+                        raise FlussDeviceOfflineError(
+                            "Device is not connected to the internet"
+                        )
                     response.raise_for_status()
                     return await response.json()
 
@@ -175,7 +185,7 @@ class FlussApiClient:
             raise FlussApiClientCommunicationError(
                 "Error fetching information"
             ) from ex
-        except FlussApiClientAuthenticationError:
+        except FlussApiClientError:
             raise
         except Exception as exception:
             LOGGER.error("Unexpected error occurred: %s", exception)

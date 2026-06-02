@@ -4,7 +4,8 @@ from .main import (
     FlussApiClientAuthenticationError,
     FlussApiClientCommunicationError,
     FlussApiClientError,
-    FlussDeviceError
+    FlussDeviceError,
+    FlussDeviceOfflineError
 )
 
 __all__ = [
@@ -12,5 +13,6 @@ __all__ = [
     "FlussApiClientAuthenticationError",
     "FlussApiClientCommunicationError",
     "FlussApiClientError",
-    "FlussDeviceError"
+    "FlussDeviceError",
+    "FlussDeviceOfflineError"
 ]
