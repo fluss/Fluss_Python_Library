@@ -2,6 +2,17 @@
 
 All notable changes to the fluss-api package will be documented in this file.
 
+## [0.2.5] - 2026-06-02
+
+### Added
+
+- New `FlussDeviceOfflineError` exception (raised on HTTP 503 when the device is not connected to the internet)
+
+### Changed
+
+- Improved API error handling: HTTP 404 now raises `FlussDeviceError` ("Device not found")
+- Re-raise all `FlussApiClientError` subclasses instead of only authentication errors
+
 ## [0.2.4] - 2026-04-10
 
 ### Changed
@@ -54,6 +65,7 @@ All notable changes to the fluss-api package will be documented in this file.
 
 - Baseline version integrated into Home Assistant
 
+[0.2.5]: https://github.com/fluss/Fluss_Python_Library/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/fluss/Fluss_Python_Library/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/fluss/Fluss_Python_Library/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/fluss/Fluss_Python_Library/compare/v0.2.1.2...v0.2.2
