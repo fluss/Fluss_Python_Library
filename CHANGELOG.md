@@ -2,6 +2,14 @@
 
 All notable changes to the fluss-api package will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+- HTTP errors that are not 401/403/404/503 now raise `FlussApiClientError` with the HTTP status and the API's own
+  `error`/`errorCode` in the message, e.g. `HTTP 429: API usage limit exceeded for current billing cycle
+  (api_quota_exceeded)`, instead of `FlussApiClientCommunicationError("Error fetching information")`
+
 ## [0.2.5] - 2026-06-02
 
 ### Added

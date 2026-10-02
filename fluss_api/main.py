@@ -161,7 +161,10 @@ class FlussApiClient:
                         raise FlussDeviceOfflineError(
                             "Device is not connected to the internet"
                         )
-                    response.raise_for_status()
+                    if not response.ok:
+                        raise FlussApiClientError(
+                            await self._error_message(response)
+                        )
                     return await response.json()
 
         except asyncio.TimeoutError as e:
@@ -192,6 +195,17 @@ class FlussApiClient:
             raise FlussApiClientError(
                 "An unexpected error occurred"
             ) from exception
+
+    async def _error_message(self, response: aiohttp.ClientResponse) -> str:
+        """Return an error message that keeps the API's own error description."""
+        try:
+            body = await response.json(content_type=None)
+        except (aiohttp.ClientError, ValueError):
+            body = None
+        error = body.get("error") if isinstance(body, dict) else None
+        error_code = body.get("errorCode") if isinstance(body, dict) else None
+        message = f"HTTP {response.status}: {error or response.reason}"
+        return f"{message} ({error_code})" if error_code else message
 
     async def close(self) -> None:
         """Close the aiohttp session if it was created by this client."""
